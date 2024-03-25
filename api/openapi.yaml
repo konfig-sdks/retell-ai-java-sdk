@@ -1,0 +1,3754 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: founders@retellai.com
+    name: Retell Support
+    url: https://www.retellai.com/
+  description: API for voice AI. Effortlessly integrate human-like Voice AI into your
+    product. | We are building an API that enables your product to provide an intuitive
+    and engaging way for user interaction - through voice.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: Retell SDK
+  version: 1.0.0
+  x-konfig-has-globally-required-security: true
+servers:
+- description: The production server.
+  url: https://api.retellai.com
+tags:
+- name: PhoneNumber
+- name: Agent
+- name: Retell
+- name: Call
+- name: RetellLLM
+paths:
+  /register-call:
+    post:
+      description: Register Call To Get CallId To Establish Connection
+      operationId: Call_establishConnection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallEstablishConnectionRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallBase'
+          description: Successfully registered a call.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "402":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection402Response'
+          description: Payment Required
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection429Response'
+          description: Too Many Requests
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Call
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--register-call
+      x-content-type: application/json
+      x-accepts: application/json
+  /get-call/{call_id}:
+    get:
+      description: Retrieve details of a specific call
+      operationId: Call_getDetails
+      parameters:
+      - description: The call id to retrieve call history for.
+        explode: false
+        in: path
+        name: call_id
+        required: true
+        schema:
+          example: 119c3f8e47135a29e65947eeb34cf12d
+          type: string
+          x-konfig-original-example: 119c3f8e47135a29e65947eeb34cf12d
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-call-call_id-get-parameters-0-schema
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallDetail'
+          description: Successfully retrieved an agent.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Call
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--get-call-call_id
+      x-accepts: application/json
+  /list-calls:
+    get:
+      description: Retrieve call details
+      operationId: Call_getDetails
+      parameters:
+      - explode: true
+        in: query
+        name: filter_criteria
+        required: false
+        schema:
+          $ref: '#/components/schemas/Call_getDetails_filter_criteria_parameter'
+        style: form
+      - description: "The calls will be sorted by `start_timestamp`, whether to return\
+          \ the calls in ascending or descending order."
+        explode: true
+        in: query
+        name: sort_order
+        required: false
+        schema:
+          default: descending
+          enum:
+          - ascending
+          - descending
+          example: descending
+          type: string
+          x-konfig-original-example: descending
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-1-schema
+        style: form
+      - description: Limit the number of calls returned.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 1000
+          example: 1000
+          type: integer
+          x-konfig-original-example: 1000
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-2-schema
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallGetDetailsResponse'
+          description: Successfully retrieved all agents.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Call
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--list-calls
+      x-accepts: application/json
+  /create-agent:
+    post:
+      description: Create a new agent
+      operationId: Agent_createNewAgent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreateNewAgentRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+          description: Successfully created a new agent.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Agent
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--create-agent
+      x-content-type: application/json
+      x-accepts: application/json
+  /get-agent/{agent_id}:
+    get:
+      description: Retrieve details of a specific agent
+      operationId: Agent_getDetails
+      parameters:
+      - description: Unique id of the agent to be retrieved.
+        explode: false
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-agent-agent_id-get-parameters-0-schema
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+          description: Successfully retrieved an agent.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Agent
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--get-agent-agent_id
+      x-accepts: application/json
+  /list-agents:
+    get:
+      description: List all agents
+      operationId: Agent_getAll
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentGetAllResponse'
+          description: Successfully retrieved all agents.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Agent
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--list-agents
+      x-accepts: application/json
+  /update-agent/{agent_id}:
+    patch:
+      description: Update an existing agent
+      operationId: Agent_updateExistingAgent
+      parameters:
+      - description: Unique id of the agent to be updated.
+        explode: false
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-agent-agent_id-patch-parameters-0-schema
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseAgent'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+          description: Successfully updated an agent.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Agent
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--update-agent-agent_id
+      x-content-type: application/json
+      x-accepts: application/json
+  /delete-agent/{agent_id}:
+    delete:
+      description: Delete an existing agent
+      operationId: Agent_deleteExistingAgent
+      parameters:
+      - description: Unique id of the agent to be deleted.
+        explode: false
+        in: path
+        name: agent_id
+        required: true
+        schema:
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-agent-agent_id-delete-parameters-0-schema
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Agent
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--delete-agent-agent_id
+      x-accepts: application/json
+  /create-retell-llm:
+    post:
+      description: Create a new Retell LLM
+      operationId: Retell_newLlm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetellLLMBase'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetellLLMResponse'
+          description: Successfully created a new Retell LLM.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Retell
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--create-retell-llm
+      x-content-type: application/json
+      x-accepts: application/json
+  /get-retell-llm/{llm_id}:
+    get:
+      description: Retrieve details of a specific Retell LLM
+      operationId: Retell_getLlmDetails
+      parameters:
+      - description: Unique id of the Retell LLM to be retrieved.
+        explode: false
+        in: path
+        name: llm_id
+        required: true
+        schema:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-retell-llm-llm_id-get-parameters-0-schema
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetellLLMResponse'
+          description: Successfully retrieved an Retell LLM.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Retell
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--get-retell-llm-llm_id
+      x-accepts: application/json
+  /list-retell-llms:
+    get:
+      description: List all retell LLM
+      operationId: RetellLlm_listAll
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetellLlmListAllResponse'
+          description: Successfully retrieved all Retell LLM.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - RetellLLM
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--list-retell-llms
+      x-accepts: application/json
+  /update-retell-llm/{llm_id}:
+    patch:
+      description: Update an existing Retell LLM
+      operationId: Retell_updateLlm
+      parameters:
+      - description: Unique id of the Retell LLM to be updated.
+        explode: false
+        in: path
+        name: llm_id
+        required: true
+        schema:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-retell-llm-llm_id-patch-parameters-0-schema
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetellLLMBase'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetellLLMResponse'
+          description: Successfully updated an Retell LLM.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Retell
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--update-retell-llm-llm_id
+      x-content-type: application/json
+      x-accepts: application/json
+  /delete-retell-llm/{llm_id}:
+    delete:
+      description: Delete an existing Retell LLM
+      operationId: Retell_deleteLlm
+      parameters:
+      - description: Unique id of the Retell LLM to be deleted.
+        explode: false
+        in: path
+        name: llm_id
+        required: true
+        schema:
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-retell-llm-llm_id-delete-parameters-0-schema
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Retell
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--delete-retell-llm-llm_id
+      x-accepts: application/json
+  /create-phone-number:
+    post:
+      description: Buy a new phone number & Bind an agent
+      operationId: PhoneNumber_purchaseNumberAndBindAgent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberPurchaseNumberAndBindAgentRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+          description: Successfully created a new number.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - PhoneNumber
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--create-phone-number
+      x-content-type: application/json
+      x-accepts: application/json
+  /get-phone-number/{phone_number}:
+    get:
+      description: Retrieve details of a specific phone number
+      operationId: PhoneNumber_getDetails
+      parameters:
+      - description: "BCP 47 format of the number (+country code, then number with\
+          \ no space, no special characters), used as the unique identifier for phone\
+          \ number APIs."
+        explode: false
+        in: path
+        name: phone_number
+        required: true
+        schema:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-phone-number-phone_number-get-parameters-0-schema
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+          description: Successfully retrieved an Retell LLM.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - PhoneNumber
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--get-phone-number-phone_number
+      x-accepts: application/json
+  /list-phone-numbers:
+    get:
+      description: List all phone numbers
+      operationId: PhoneNumber_getAllNumbers
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberGetAllNumbersResponse'
+          description: Successfully retrieved all phone numbers.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - PhoneNumber
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--list-phone-numbers
+      x-accepts: application/json
+  /update-phone-number/{phone_number}:
+    patch:
+      description: Update an existing Retell LLM
+      operationId: PhoneNumber_updateRetellLlm
+      parameters:
+      - description: "BCP 47 format of the number (+country code, then number with\
+          \ no space, no special characters), used as the unique identifier for phone\
+          \ number APIs."
+        explode: false
+        in: path
+        name: phone_number
+        required: true
+        schema:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-phone-number-phone_number-patch-parameters-0-schema
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumberUpdateRetellLlmRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+          description: Successfully updated an phone number object.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - PhoneNumber
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--update-phone-number-phone_number
+      x-content-type: application/json
+      x-accepts: application/json
+  /delete-phone-number/{phone_number}:
+    delete:
+      description: Delete an existing phone number
+      operationId: PhoneNumber_removePhoneNumber
+      parameters:
+      - description: "BCP 47 format of the number (+country code, then number with\
+          \ no space, no special characters), used as the unique identifier for phone\
+          \ number APIs."
+        explode: false
+        in: path
+        name: phone_number
+        required: true
+        schema:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-phone-number-phone_number-delete-parameters-0-schema
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - PhoneNumber
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--delete-phone-number-phone_number
+      x-accepts: application/json
+  /create-phone-call:
+    post:
+      description: Create a new phone call
+      operationId: Call_makeConnection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallMakeConnectionRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallBase'
+          description: Successfully made an outbound call.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection422Response'
+          description: Unprocessable Content
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security:
+      - api_key: []
+      tags:
+      - Call
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--create-phone-call
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnectionResponse'
+      description: Bad Request
+      x-do-not-generate: true
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnection401Response'
+      description: Unauthorized
+      x-do-not-generate: true
+    PaymentRequired:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnection402Response'
+      description: Payment Required
+      x-do-not-generate: true
+    UnprocessableContent:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnection422Response'
+      description: Unprocessable Content
+      x-do-not-generate: true
+    TooManyRequests:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnection429Response'
+      description: Too Many Requests
+      x-do-not-generate: true
+    InternalServerError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallEstablishConnection500Response'
+      description: Internal Server Error
+      x-do-not-generate: true
+  schemas:
+    CallBase:
+      example:
+        to_number: "12137771235"
+        metadata: "{}"
+        call_status: registered
+        agent_id: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        sample_rate: 24000
+        end_call_after_silence_ms: 600000
+        audio_encoding: s16le
+        start_timestamp: 1703302407333
+        from_number: "12137771234"
+        audio_websocket_protocol: twilio
+        retell_llm_dynamic_variables:
+          customer_name: John Doe
+        call_id: Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6
+      properties:
+        call_id:
+          description: Unique id of the call. Used to identify in LLM websocket and
+            used to authenticate in audio websocket.
+          example: Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6
+          type: string
+          x-konfig-original-example: Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-call_id
+        agent_id:
+          description: Corresponding agent id of this call.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-agent_id
+        audio_websocket_protocol:
+          description: |-
+            Where the audio websocket would connect from would determine the format / protocol of websocket messages, and would determine how our server read audio bytes and send audio bytes.:
+
+            - `web`: The protocol defined by Retell, commonly used for connecting from web frontend. Also useful for those who want to manipulate audio bytes directly.
+
+            - `twilio`: The [websocket protocol](https://www.twilio.com/docs/voice/twiml/stream#message-media) defined by Twilio, used when your system uses Twilio, and supplies Retell audio websocket url to Twilio.
+          enum:
+          - web
+          - twilio
+          example: twilio
+          type: string
+          x-konfig-original-example: twilio
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-audio_websocket_protocol
+        audio_encoding:
+          description: "The audio encoding of the call. The following formats are\
+            \ supported: \n\n- `s16le` 16 bit linear PCM audio, the native format\
+            \ for web audio capture and playback.\n\n- `mulaw` non-linear audio encoding\
+            \ technique used in telephony. Commonly used by Twilio."
+          enum:
+          - s16le
+          - mulaw
+          example: s16le
+          type: string
+          x-konfig-original-example: s16le
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-audio_encoding
+        sample_rate:
+          description: "Sample rate of the conversation, the input and output audio\
+            \ bytes will all conform to this rate. Check the audio source, audio format,\
+            \ and voice used for the agent to select one that works. supports value\
+            \ ranging from [8000, 48000]. Note for Twilio `mulaw` encoding, the sample\
+            \ rate has to be 8000.\n\n- `s16le` sample rate recommendation (natively\
+            \ supported, lowest latency): \n  - elevenlabs voices: 16000, 22050, 24000,\
+            \ 44100.\n  - openai voices: 24000.\n\n  - deepgram voices: 8000, 16000,\
+            \ 24000, 32000, 48000."
+          example: 24000
+          type: integer
+          x-konfig-original-example: 24000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-sample_rate
+        call_status:
+          description: "Status of call.\n\n- `registered`: Call id issued, ready to\
+            \ make a call using this id.\n\n- `ongoing`: Call connected and ongoing.\n\
+            \n- `ended`: The underlying websocket has ended for the call. Either user\
+            \ or agent hanged up, or call transferred. \n\n- `error`: Call encountered\
+            \ error."
+          enum:
+          - registered
+          - ongoing
+          - ended
+          - error
+          example: registered
+          type: string
+          x-konfig-original-example: registered
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-call_status
+        start_timestamp:
+          description: Begin timestamp (milliseconds since epoch) of the call.
+          example: 1703302407333
+          type: integer
+          x-konfig-original-example: 1703302407333
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-start_timestamp
+        end_call_after_silence_ms:
+          description: "If users stay silent for a period, end the call. By default,\
+            \ it is set to 600,000 ms (10 min). The minimum value allowed is 10,000\
+            \ ms (10 s)."
+          example: 600000
+          type: integer
+          x-konfig-original-example: 600000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-end_call_after_silence_ms
+        from_number:
+          description: "The caller number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771234"
+          type: string
+          x-konfig-original-example: 12137771234
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-from_number
+        to_number:
+          description: "The callee number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771235"
+          type: string
+          x-konfig-original-example: 12137771235
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-to_number
+        metadata:
+          description: "An abtriary object for storage purpose only. You can put anything\
+            \ here like your own id for the call, twilio SID, internal customer id.\
+            \ Not used for processing, when we connect to your LLM websocket server,\
+            \ you can then get it from the call object."
+          type: object
+        retell_llm_dynamic_variables:
+          additionalProperties: {}
+          description: Add optional dynamic variables in key value pairs of string
+            that injects into your Retell LLM prompt and tool description. Only applicable
+            for Retell LLM.
+          example:
+            customer_name: John Doe
+          type: object
+          x-konfig-original-example:
+            customer_name: John Doe
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallBase-properties-retell_llm_dynamic_variables
+      required:
+      - agent_id
+      - audio_encoding
+      - audio_websocket_protocol
+      - call_id
+      - call_status
+      - sample_rate
+      - start_timestamp
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    Utterance:
+      properties:
+        role:
+          description: Documents whether this utterance is spoken by agent or user.
+          enum:
+          - agent
+          - user
+          example: agent
+          type: string
+          x-konfig-original-example: agent
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Utterance-properties-role
+        content:
+          description: Transcript of the utterances.
+          example: hi how are you doing?
+          type: string
+          x-konfig-original-example: hi how are you doing?
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Utterance-properties-content
+        words:
+          description: "Array of words in the utternace with the word timestamp. Useful\
+            \ for understanding what word was spoken at what time. Note that the word\
+            \ timestamp is not guranteed to be accurate, it's more like an approximation."
+          example:
+          - word: hi
+            start: 0.7
+            end: 1.3
+          items:
+            $ref: '#/components/schemas/Utterance_words_inner'
+          type: array
+          x-konfig-original-example:
+          - word: hi
+            start: 0.7
+            end: 1.3
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-Utterance-properties-words
+      required:
+      - content
+      - role
+      - words
+      type: object
+    CallDetail:
+      allOf:
+      - $ref: '#/components/schemas/CallBase'
+      - $ref: '#/components/schemas/CallDetail_allOf'
+      x-konfig-is-used-in-successful-response: true
+    BaseAgent:
+      example:
+        agent_name: Jarvis
+        webhook_url: https://webhook-url-here
+        voice_id: 11labs-Adrian
+        ambient_sound: coffee-shop
+        format_text: true
+        optOutSensitiveDataStorage: true
+        language: en-US
+        responsiveness: 1
+        voice_speed: 1
+        boosted_keywords:
+        - retell
+        - kroger
+        voice_temperature: 1
+        enable_backchannel: true
+        llm_websocket_url: wss://your-websocket-endpoint
+      properties:
+        llm_websocket_url:
+          description: "The URL we will establish LLM websocket for getting response,\
+            \ usually your server. Check out [LLM WebSocket](https://raw.githubusercontent.com)\
+            \ for more about request format (sent from us) and response format (send\
+            \ to us)."
+          example: wss://your-websocket-endpoint
+          type: string
+          x-konfig-original-example: wss://your-websocket-endpoint
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-llm_websocket_url
+        voice_id:
+          description: Unique voice id used for the agent. Find list of available
+            voices and their preview in Dashboard.
+          example: 11labs-Adrian
+          type: string
+          x-konfig-original-example: 11labs-Adrian
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_id
+        voice_temperature:
+          description: "Controls how stable the voice is. Value ranging from [0,2].\
+            \ Lower value means more stable, and higher value means more variant speech\
+            \ generation. Currently this setting only applies to `11labs` voices.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_temperature
+        voice_speed:
+          description: "Controls speed of voice. Value ranging from [0.5,2]. Lower\
+            \ value means slower speech, while higher value means faster speech rate.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_speed
+        responsiveness:
+          description: "Controls how responsive is the agent. Value ranging from [0,1].\
+            \ Lower value means less responsive agent (wait more, respond slower),\
+            \ while higher value means faster exchanges (respond when it can). If\
+            \ unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-responsiveness
+        enable_backchannel:
+          description: "Controls whether the agent would backchannel (agent interjects\
+            \ the speaker with phrases like \"yeah\", \"uh-huh\" to signify interest\
+            \ and engagement). Backchannel when enabled tends to show up more in longer\
+            \ user utterances. If not set, agent will not backchannel."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-enable_backchannel
+        ambient_sound:
+          description: "If set, will add ambient environment sound to the call to\
+            \ make experience more realistic. Currently supports the following options:\n\
+            \n- `coffee-shop`: Coffee shop ambience with people chatting in background.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/coffee-shop.wav)\n\
+            \n- `convention-hall`: Convention hall ambience, with some echo and people\
+            \ chatting in background. [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/convention-hall.wav)\n\
+            \n- `summer-outdoor`: Summer outdoor ambience with cicada chirping. [Listen\
+            \ to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/summer-outdoor.wav)\n\
+            \n- `mountain-outdoor`: Mountain outdoor ambience with birds singing.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/mountain-outdoor.wav)\n\
+            \n Set to string `null` to remove ambient sound from this agent. "
+          enum:
+          - coffee-shop
+          - convention-hall
+          - summer-outdoor
+          - mountain-outdoor
+          - "null"
+          type: string
+        agent_name:
+          description: The name of the agent. Only used for your own reference.
+          example: Jarvis
+          type: string
+          x-konfig-original-example: Jarvis
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-agent_name
+        language:
+          description: "`Beta feature, use with caution.`\n\n This setting specifies\
+            \ the agent's operational language, including base language and dialect.\
+            \ Speech recognition considers both elements, but text-to-speech currently\
+            \ only recognizes the base language. \n\n For instance, selecting `en-GB`\
+            \ optimizes speech recognition for British English, yet text-to-speech\
+            \ output will be in standard English. If dialect-specific text-to-speech\
+            \ is required, please contact us for support. \n\n- `11lab voices`: supports\
+            \ English(en), German(de), Spanish(es), Hindi(hi), Portuguese(pt) \n\n\
+            - `openAI voices`: supports English(en), German(de), Spanish(es), Hindi(hi),\
+            \ Portuguese(pt), Japanese(ja) \n\n- `deepgram voices`: supports English(en) "
+          enum:
+          - en-US
+          - en-IN
+          - en-GB
+          - de-DE
+          - es-ES
+          - es-419
+          - hi-IN
+          - ja-JP
+          - pt-PT
+          - pt-BR
+          example: en-US
+          type: string
+          x-konfig-original-example: en-US
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-language
+        webhook_url:
+          description: "The webhook for agent to listen to call events. See what events\
+            \ it would get at [webhook doc](https://raw.githubusercontent.com). If\
+            \ set, will binds webhook events for this agent to the specified url,\
+            \ and will ignore the account level webhook for this agent. Set to string\
+            \ `null` to remove webhook url from this agent."
+          example: https://webhook-url-here
+          type: string
+          x-konfig-original-example: https://webhook-url-here
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-webhook_url
+        boosted_keywords:
+          description: "Provide a customized list of keywords to bias the transcriber\
+            \ model, so that these words are more likely to get transcribed. Commonly\
+            \ used for names, brands, street, etc."
+          example:
+          - retell
+          - kroger
+          items:
+            type: string
+          type: array
+          x-konfig-original-example:
+          - retell
+          - kroger
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-boosted_keywords
+        format_text:
+          description: "Whether to format the transcribed text with inverse text normalization.\
+            \ It transforms the spoken form of text into written form for entities\
+            \ like phone number, email address, street address, etc. For example,\
+            \ \"february fourth twenty twenty two\" can be converted into \"february\
+            \ 4th 2022\". If not set, the default is true."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-format_text
+        optOutSensitiveDataStorage:
+          description: Disable transcripts and recordings storage for enhanced privacy.
+            Access transcripts securely via webhooks.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-optOutSensitiveDataStorage
+      type: object
+    AgentResponse:
+      allOf:
+      - $ref: '#/components/schemas/AgentResponse_allOf'
+      - $ref: '#/components/schemas/BaseAgent'
+      - $ref: '#/components/schemas/AgentResponse_allOf_1'
+      required:
+      - agent_id
+      - last_modification_timestamp
+      - llm_websocket_url
+      - voice_id
+      x-konfig-is-used-in-successful-response: true
+    RetellLLMResponse:
+      allOf:
+      - $ref: '#/components/schemas/RetellLLMResponse_allOf'
+      - $ref: '#/components/schemas/RetellLLMBase'
+      - $ref: '#/components/schemas/RetellLLMResponse_allOf_1'
+      required:
+      - last_modification_timestamp
+      - llm_id
+      - llm_websocket_url
+      x-konfig-is-used-in-successful-response: true
+    RetellLLMBase:
+      example:
+        begin_message: Hey I am a virtual assistant calling from Retell Hospital.
+        starting_state: information_collection
+        general_prompt: You are ...
+        general_tools:
+        - description: End the call with user only when user explicitly requests it.
+          type: end_call
+          name: end_call
+        states:
+        - name: information_collection
+          state_prompt: You will follow the steps below to collect information...
+          edges:
+          - description: Transition to book an appointment if the user is due for
+              an annual checkup based on the last checkup time collected.
+            destination_state_name: appointment_booking
+            speak_during_transition: false
+          tools:
+          - description: Transfer to the support team when user seems angry or explicitly
+              requests a human agent
+            type: transfer_call
+            name: transfer_to_support
+            number: "16175551212"
+        - name: appointment_booking
+          state_prompt: You will follow the steps below to book an appointment...
+          tools:
+          - description: "Book an annual check up when user provided name, email,\
+              \ phone number, and have selected a time."
+            type: book_appointment_cal
+            name: book_appointment
+            cal_api_key: cal_live_xxxxxxxxxxxx
+            event_type_id: 60444
+            timezone: America/Los_Angeles
+      properties:
+        general_prompt:
+          description: "General prompt that's appended to system prompt no matter\
+            \ what state the agent is in. \n\n- System prompt (with state) = general\
+            \ prompt + state prompt.\n\n- System prompt (no state) = general prompt."
+          example: You are ...
+          type: string
+          x-konfig-original-example: You are ...
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_prompt
+        general_tools:
+          description: "A list of tools the model may call (to get external knowledge,\
+            \ call API, etc). You can select from some common predefined tools like\
+            \ end call, transfer call, etc; or you can create your own custom tool\
+            \ (last option) for the LLM to use. \n\n- Tools of LLM (with state) =\
+            \ general tools + state tools + state transitions\n\n- Tools of LLM (no\
+            \ state) = general tools"
+          example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          items:
+            $ref: '#/components/schemas/Tool'
+          type: array
+          x-konfig-original-example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_tools
+        states:
+          description: "States of the LLM. This is to help reduce prompt length and\
+            \ tool choices when the call can be broken into distinct states. With\
+            \ shorter prompts and less tools, the LLM can better focus and follow\
+            \ the rules, minimizing hallucination. If this field is not set, the agent\
+            \ would only have general prompt and general tools (essentially one state)."
+          example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          items:
+            $ref: '#/components/schemas/State'
+          type: array
+          x-konfig-original-example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-states
+        starting_state:
+          description: Name of the starting state. Required if states is not empty.
+          example: information_collection
+          type: string
+          x-konfig-original-example: information_collection
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-starting_state
+        begin_message:
+          description: "First utterance said by the agent in the call. If not set,\
+            \ LLM will dynamically generate a message. If set to \"\", agent will\
+            \ wait for user to speak first."
+          example: Hey I am a virtual assistant calling from Retell Hospital.
+          type: string
+          x-konfig-original-example: Hey I am a virtual assistant calling from Retell
+            Hospital.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-begin_message
+      type: object
+    EndCallTool:
+      properties:
+        description:
+          description: Describes when to end the call.
+          type: string
+        type:
+          enum:
+          - end_call
+          type: string
+        name:
+          description: Name of the tool. Must be unique within all tools available
+            to LLM at any given time (general tools + state tools + state transitions).
+          type: string
+      required:
+      - name
+      - type
+      type: object
+    TransferCallTool:
+      properties:
+        description:
+          description: Describes when to transfer the call.
+          type: string
+        type:
+          enum:
+          - transfer_call
+          type: string
+        name:
+          description: Name of the tool. Must be unique within all tools available
+            to LLM at any given time (general tools + state tools + state edges).
+          example: transfer_to_support
+          type: string
+          x-konfig-original-example: transfer_to_support
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-TransferCallTool-properties-name
+        number:
+          description: "The number to transfer to in E.164 format (a + and country\
+            \ code, then the phone number with no space or other special characters).\
+            \ For example, +16175551212."
+          type: string
+      required:
+      - name
+      - number
+      - type
+      type: object
+    CheckAvailabilityCalTool:
+      properties:
+        description:
+          description: Describes when to check availability.
+          type: string
+        type:
+          enum:
+          - check_availability_cal
+          type: string
+        name:
+          description: Name of the tool. Must be unique within all tools available
+            to LLM at any given time (general tools + state tools + state transitions).
+          type: string
+        cal_api_key:
+          description: Cal.com Api key that have access to the cal.com event you want
+            to check availability for.
+          type: string
+        event_type_id:
+          description: Cal.com event type id number for the cal.com event you want
+            to check availability for.
+          type: number
+        timezone:
+          description: "Timezone to be used when checking availability, must be in\
+            \ [IANA timezone database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).\
+            \ If not specified, will check if user specified timezone in call, and\
+            \ if not, will use the timezone of the Retell servers."
+          type: string
+      required:
+      - cal_api_key
+      - event_type_id
+      - name
+      - type
+      type: object
+    BookAppointmentCalTool:
+      properties:
+        description:
+          description: Describes when to book the appointment.
+          type: string
+        type:
+          enum:
+          - book_appointment_cal
+          type: string
+        name:
+          description: Name of the tool. Must be unique within all tools available
+            to LLM at any given time (general tools + state tools + state transitions).
+          type: string
+        cal_api_key:
+          description: Cal.com Api key that have access to the cal.com event you want
+            to book appointment.
+          type: string
+        event_type_id:
+          description: Cal.com event type id number for the cal.com event you want
+            to book appointment.
+          type: number
+        timezone:
+          description: "Timezone to be used when booking appointment, must be in [IANA\
+            \ timezone database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).\
+            \ If not specified, will check if user specified timezone in call, and\
+            \ if not, will use the timezone of the Retell servers."
+          type: string
+      required:
+      - cal_api_key
+      - event_type_id
+      - name
+      - type
+      type: object
+    CustomTool:
+      properties:
+        description:
+          description: Describes what this tool does and when to call this tool.
+          type: string
+        parameters:
+          $ref: '#/components/schemas/ToolParameter'
+        type:
+          enum:
+          - custom
+          type: string
+        name:
+          description: Name of the tool. Must be unique within all tools available
+            to LLM at any given time (general tools + state tools + state edges).
+          type: string
+        url:
+          description: The URL we will post the function name and arguments to get
+            a result for the function. Usually this is your server.
+          type: string
+        speak_during_execution:
+          description: "Determines whether the agent would say sentence like \"One\
+            \ moment, let me check that.\" when executing the function. Recommend\
+            \ to turn on if your function call takes over 1s (including network) to\
+            \ complete, so that your agent remains responsive."
+          type: boolean
+        speak_after_execution:
+          description: Determines whether the agent would call LLM another time and
+            speak when the result of function is obtained. Usually this needs to get
+            turned on so user can get update for the function call.
+          type: boolean
+        execution_message_description:
+          description: The description for the sentence agent say during execution.
+            Only applicable when speak_during_execution is true. Can write what to
+            say or even provide examples. The default is "The message you will say
+            to callee when calling this tool. Make sure it fits into the conversation
+            smoothly.".
+          type: string
+      required:
+      - description
+      - name
+      - speak_after_execution
+      - speak_during_execution
+      - type
+      - url
+      type: object
+    Tool: {}
+    State:
+      properties:
+        name:
+          description: "Name of the state, must be unique for each state."
+          example: information_collection
+          type: string
+          x-konfig-original-example: information_collection
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-State-properties-name
+        state_prompt:
+          description: "Prompt of the state, will be appended to the system prompt\
+            \ of LLM. \n\n - System prompt = general prompt + state prompt."
+          example: |-
+            ## Task
+            You will follow the steps below...
+          type: string
+          x-konfig-original-example: |-
+            ## Task
+            You will follow the steps below...
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-State-properties-state_prompt
+        edges:
+          description: Edges of the state define how and what state can be reached
+            from this state.
+          items:
+            $ref: '#/components/schemas/StateEdge'
+          type: array
+        tools:
+          description: "A list of tools specific to this state the model may call\
+            \ (to get external knowledge, call API, etc). You can select from some\
+            \ common predefined tools like end call, transfer call, etc; or you can\
+            \ create your own custom tool (last option) for the LLM to use. \n\n-\
+            \ Tools of LLM = general tools + state tools + state transitions"
+          items:
+            $ref: '#/components/schemas/Tool'
+          type: array
+      required:
+      - name
+      type: object
+    StateEdge:
+      properties:
+        description:
+          description: Describes what's the transition and at what time / criteria
+            should this transition happen.
+          type: string
+        parameters:
+          $ref: '#/components/schemas/ToolParameter'
+        destination_state_name:
+          description: "The destination state name when going through transition of\
+            \ state via this edge. State transition internally is implemented as a\
+            \ tool call of LLM, and a tool call with name \"transition_to_{destination_state_name}\"\
+            \ will get created. Feel free to reference it inside the prompt."
+          type: string
+        speak_during_transition:
+          description: "After the state transitions, the agent would speak based on\
+            \ the new prompt and tools in the new state. This bit here controls whether\
+            \ to speak a transition sentence during the transition (so agent would\
+            \ say sentences like \"Let's move on to the next section to help you set\
+            \ up an acount.\", and state transitions, and agent continue to speak.).\
+            \ Usually this is not necessary, and is recommended to set to false to\
+            \ avoid LLM repeating itself during and after transition."
+          type: boolean
+      required:
+      - description
+      - destination_state_name
+      - speak_during_transition
+      type: object
+    ToolParameter:
+      description: "The parameters the functions accepts, described as a JSON Schema\
+        \ object. See [JSON Schema reference](https://json-schema.org/understanding-json-schema/)\
+        \ for documentation about the format. Omitting parameters defines a function\
+        \ with an empty parameter list."
+      properties:
+        type:
+          description: Type must be "object" for a JSON Schema object.
+          enum:
+          - object
+          type: string
+        properties:
+          additionalProperties: {}
+          description: "The value of properties is an object, where each key is the\
+            \ name of a property and each value is a schema used to validate that\
+            \ property."
+          type: object
+        required:
+          description: List of names of required property when generating this parameter.
+            LLM will do its best to generate the required properties in its function
+            arguments. Property must exist in properties.
+          items:
+            type: string
+          type: array
+      required:
+      - properties
+      - type
+      type: object
+    PhoneNumberResponse:
+      example:
+        agent_id: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        area_code: 415
+        phone_number: "14157774444"
+        phone_number_pretty: +1 (415) 777-4444
+        last_modification_timestamp: 1703413636133
+      properties:
+        phone_number:
+          description: "BCP 47 format of the number (+country code, then number with\
+            \ no space, no special characters), used as the unique identifier for\
+            \ phone number APIs."
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-phone_number
+        phone_number_pretty:
+          description: "Pretty printed phone number, provided for your reference."
+          example: +1 (415) 777-4444
+          type: string
+          x-konfig-original-example: +1 (415) 777-4444
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-phone_number_pretty
+        agent_id:
+          description: Unique id of agent to bind to newly obtained number. The number
+            will automatically use the agent when doing inbound / outbound calls.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-agent_id
+        area_code:
+          description: Area code of the number to obtain. Format is a 3 digit integer.
+            Currently only supports US area code.
+          example: 415
+          type: integer
+          x-konfig-original-example: 415
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-area_code
+        last_modification_timestamp:
+          description: Last modification timestamp (milliseconds since epoch). Either
+            the time of last update or creation if no updates available.
+          example: 1703413636133
+          type: integer
+          x-konfig-original-example: 1703413636133
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-last_modification_timestamp
+      required:
+      - agent_id
+      - area_code
+      - last_modification_timestamp
+      - phone_number
+      - phone_number_pretty
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    CallEstablishConnectionRequest:
+      example:
+        to_number: "12137771235"
+        metadata: "{}"
+        agent_id: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        sample_rate: 24000
+        end_call_after_silence_ms: 600000
+        audio_encoding: s16le
+        from_number: "12137771234"
+        audio_websocket_protocol: twilio
+        retell_llm_dynamic_variables:
+          customer_name: John Doe
+      properties:
+        agent_id:
+          description: Unique id of agent used for the call. Your agent would contain
+            the LLM Websocket url used for this call.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-agent_id
+        audio_websocket_protocol:
+          description: |-
+            Where the audio websocket would connect from would determine the format / protocol of websocket messages, and would determine how our server read audio bytes and send audio bytes.:
+
+            - `web`: The protocol defined by Retell, commonly used for connecting from web frontend. Also useful for those who want to manipulate audio bytes directly.
+
+            - `twilio`: The [websocket protocol](https://www.twilio.com/docs/voice/twiml/stream#message-media) defined by Twilio, used when your system uses Twilio, and supplies Retell audio websocket url to Twilio.
+          enum:
+          - web
+          - twilio
+          example: twilio
+          type: string
+          x-konfig-original-example: twilio
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_websocket_protocol
+        audio_encoding:
+          description: "The audio encoding of the call. The following formats are\
+            \ supported: \n\n- `s16le` 16 bit linear PCM audio, the native format\
+            \ for web audio capture and playback.\n\n- `mulaw` non-linear audio encoding\
+            \ technique used in telephony. Commonly used by Twilio."
+          enum:
+          - s16le
+          - mulaw
+          example: s16le
+          type: string
+          x-konfig-original-example: s16le
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_encoding
+        sample_rate:
+          description: "Sample rate of the conversation, the input and output audio\
+            \ bytes will all conform to this rate. Check the audio source, audio format,\
+            \ and voice used for the agent to select one that works. supports value\
+            \ ranging from [8000, 48000]. Note for Twilio `mulaw` encoding, the sample\
+            \ rate has to be 8000.\n\n- `s16le` sample rate recommendation (natively\
+            \ supported, lowest latency): \n  - elevenlabs voices: 16000, 22050, 24000,\
+            \ 44100.\n  - openai voices: 24000.\n\n  - deepgram voices: 8000, 16000,\
+            \ 24000, 32000, 48000."
+          example: 24000
+          type: integer
+          x-konfig-original-example: 24000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-sample_rate
+        end_call_after_silence_ms:
+          description: "If users stay silent for a period, end the call. By default,\
+            \ it is set to 600,000 ms (10 min). The minimum value allowed is 10,000\
+            \ ms (10 s)."
+          example: 600000
+          type: integer
+          x-konfig-original-example: 600000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-end_call_after_silence_ms
+        from_number:
+          description: "The caller number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771234"
+          type: string
+          x-konfig-original-example: 12137771234
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-from_number
+        to_number:
+          description: "The callee number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771235"
+          type: string
+          x-konfig-original-example: 12137771235
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-to_number
+        metadata:
+          description: "An abtriary object for storage purpose only. You can put anything\
+            \ here like your own id for the call, twilio SID, internal customer id.\
+            \ Not used for processing, when we connect to your LLM websocket server,\
+            \ you can then get it from the call object."
+          type: object
+        retell_llm_dynamic_variables:
+          additionalProperties: {}
+          description: Add optional dynamic variables in key value pairs of string
+            that injects into your Retell LLM prompt and tool description. Only applicable
+            for Retell LLM.
+          example:
+            customer_name: John Doe
+          type: object
+          x-konfig-original-example:
+            customer_name: John Doe
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-retell_llm_dynamic_variables
+      required:
+      - agent_id
+      - audio_encoding
+      - audio_websocket_protocol
+      - sample_rate
+      type: object
+    AgentCreateNewAgentRequest:
+      allOf:
+      - $ref: '#/components/schemas/BaseAgent'
+      - required:
+        - llm_websocket_url
+        - voice_id
+    PhoneNumberPurchaseNumberAndBindAgentRequest:
+      example:
+        agent_id: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        area_code: 415
+      properties:
+        agent_id:
+          description: Unique id of agent to bind to newly obtained number. The number
+            will automatically use the agent when doing inbound / outbound calls.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-agent_id
+        area_code:
+          description: Area code of the number to obtain. Format is a 3 digit integer.
+            Currently only supports US area code.
+          example: 415
+          type: integer
+          x-konfig-original-example: 415
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-area_code
+      required:
+      - agent_id
+      type: object
+    PhoneNumberUpdateRetellLlmRequest:
+      example:
+        agent_id: agent_id
+      properties:
+        agent_id:
+          description: Unique id of agent to bind to number. The number will automatically
+            use the agent when doing inbound / outbound calls.
+          type: string
+      required:
+      - agent_id
+      type: object
+    CallMakeConnectionRequest:
+      example:
+        phone_number:
+          from: "14157774444"
+          to: "12137774445"
+        override_agent_id: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        retell_llm_dynamic_variables:
+          customer_name: John Doe
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/CallMakeConnectionRequest_phone_number'
+        override_agent_id:
+          description: "For this particular call, override the agent used with this\
+            \ agent id. This does not bind the agent to this number, this is for one\
+            \ time override."
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-override_agent_id
+        retell_llm_dynamic_variables:
+          additionalProperties: {}
+          description: Add optional dynamic variables in key value pairs of string
+            that injects into your Retell LLM prompt and tool description. Only applicable
+            for Retell LLM.
+          example:
+            customer_name: John Doe
+          type: object
+          x-konfig-original-example:
+            customer_name: John Doe
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-retell_llm_dynamic_variables
+      required:
+      - phone_number
+      type: object
+    CallEstablishConnectionResponse:
+      properties:
+        error_message:
+          example: "Invalid request format, please check API reference."
+          type: string
+          x-konfig-original-example: "Invalid request format, please check API reference."
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionResponse-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallEstablishConnection401Response:
+      properties:
+        error_message:
+          example: API key is missing or invalid.
+          type: string
+          x-konfig-original-example: API key is missing or invalid.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnection401Response-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallEstablishConnection402Response:
+      properties:
+        error_message:
+          example: "Trial has ended, please add payment method."
+          type: string
+          x-konfig-original-example: "Trial has ended, please add payment method."
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnection402Response-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallEstablishConnection422Response:
+      properties:
+        error_message:
+          example: Cannot find requested asset under given api key.
+          type: string
+          x-konfig-original-example: Cannot find requested asset under given api key.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnection422Response-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallEstablishConnection429Response:
+      properties:
+        error_message:
+          example: "Account rate limited, please throttle your requests."
+          type: string
+          x-konfig-original-example: "Account rate limited, please throttle your requests."
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnection429Response-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallEstablishConnection500Response:
+      properties:
+        error_message:
+          example: An unexpected server error occurred.
+          type: string
+          x-konfig-original-example: An unexpected server error occurred.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnection500Response-properties-error_message
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    CallGetDetailsResponse:
+      items:
+        $ref: '#/components/schemas/CallDetail'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    AgentGetAllResponse:
+      items:
+        $ref: '#/components/schemas/AgentResponse'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    RetellLlmListAllResponse:
+      items:
+        $ref: '#/components/schemas/RetellLLMResponse'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    PhoneNumberGetAllNumbersResponse:
+      items:
+        $ref: '#/components/schemas/PhoneNumberResponse'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    konfig-generated-schema-paths--get-call-call_id-get-parameters-0-schema:
+      example: 119c3f8e47135a29e65947eeb34cf12d
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-agent_id:
+      example:
+      - oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      items:
+        example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+        type: string
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_start_timestamp:
+      example: 1703302407399
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_start_timestamp:
+      example: 1703302407300
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_end_timestamp:
+      example: 1703302428899
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_end_timestamp:
+      example: 1703302428800
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-1-schema:
+      example: descending
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--list-calls-get-parameters-2-schema:
+      example: 1000
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--get-agent-agent_id-get-parameters-0-schema:
+      example: 16b980523634a6dc504898cda492e939
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--update-agent-agent_id-patch-parameters-0-schema:
+      example: 16b980523634a6dc504898cda492e939
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--delete-agent-agent_id-delete-parameters-0-schema:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--get-retell-llm-llm_id-get-parameters-0-schema:
+      example: 16b980523634a6dc504898cda492e939
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--update-retell-llm-llm_id-patch-parameters-0-schema:
+      example: 16b980523634a6dc504898cda492e939
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--delete-retell-llm-llm_id-delete-parameters-0-schema:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-paths--get-phone-number-phone_number-get-parameters-0-schema:
+      example: 14157774444
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--update-phone-number-phone_number-patch-parameters-0-schema:
+      example: 14157774444
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--delete-phone-number-phone_number-delete-parameters-0-schema:
+      example: 14157774444
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-call_id:
+      example: Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-audio_websocket_protocol:
+      example: twilio
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-audio_encoding:
+      example: s16le
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-sample_rate:
+      example: 24000
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-call_status:
+      example: registered
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-start_timestamp:
+      example: 1703302407333
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-end_call_after_silence_ms:
+      example: 600000
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-from_number:
+      example: 12137771234
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-to_number:
+      example: 12137771235
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallBase-properties-retell_llm_dynamic_variables:
+      example:
+        customer_name: John Doe
+      properties:
+        customer_name:
+          example: John Doe
+          type: string
+      type: object
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Utterance-properties-role:
+      example: agent
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Utterance-properties-content:
+      example: hi how are you doing?
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-Utterance-properties-words:
+      example:
+      - word: hi
+        start: 0.7
+        end: 1.3
+      items:
+        properties:
+          word:
+            example: hi
+            type: string
+          start:
+            example: 0.7
+            type: number
+          end:
+            example: 1.3
+            type: number
+        type: object
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-end_timestamp:
+      example: 1703302428855
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-transcript:
+      example: "Agent: hi how are you doing?\nUser: Doing pretty well. How are you?\n\
+        Agent: That's great to hear! I'm doing well too, thanks! What's up?\nUser:\
+        \ I don't have anything in particular.\nAgent: Got it, just checking in!\n\
+        User: Alright. See you.\nAgent: have a nice day\n "
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-recording_url:
+      example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/recording.wav
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-public_log_url:
+      example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/public_log.txt
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p50:
+      example: 0.8
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p90:
+      example: 1.2
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p95:
+      example: 1.5
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p99:
+      example: 2.7
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-max:
+      example: 2.7
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-min:
+      example: 0.5
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-num:
+      example: 10
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-llm_websocket_url:
+      example: wss://your-websocket-endpoint
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-voice_id:
+      example: 11labs-Adrian
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-voice_temperature:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-voice_speed:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-responsiveness:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-enable_backchannel:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-agent_name:
+      example: Jarvis
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-language:
+      example: en-US
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-webhook_url:
+      example: https://webhook-url-here
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-boosted_keywords:
+      example:
+      - retell
+      - kroger
+      items:
+        example: retell
+        type: string
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-format_text:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-BaseAgent-properties-optOutSensitiveDataStorage:
+      example: true
+      type: boolean
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-AgentResponse-allOf-0-properties-agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-AgentResponse-allOf-2-properties-last_modification_timestamp:
+      example: 1703413636133
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-0-properties-llm_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-0-properties-llm_websocket_url:
+      example: wss://api.retellai.com/retell-llm/llm-websocket/oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-2-properties-last_modification_timestamp:
+      example: 1703413636133
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_prompt:
+      example: You are ...
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_tools:
+      example:
+      - description: End the call with user only when user explicitly requests it.
+        type: end_call
+        name: end_call
+      items:
+        properties:
+          description:
+            example: End the call with user only when user explicitly requests it.
+            type: string
+          type:
+            example: end_call
+            type: string
+          name:
+            example: end_call
+            type: string
+        type: object
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMBase-properties-states:
+      example:
+      - name: information_collection
+        state_prompt: You will follow the steps below to collect information...
+        edges:
+        - description: Transition to book an appointment if the user is due for an
+            annual checkup based on the last checkup time collected.
+          destination_state_name: appointment_booking
+          speak_during_transition: false
+        tools:
+        - description: Transfer to the support team when user seems angry or explicitly
+            requests a human agent
+          type: transfer_call
+          name: transfer_to_support
+          number: "16175551212"
+      - name: appointment_booking
+        state_prompt: You will follow the steps below to book an appointment...
+        tools:
+        - description: "Book an annual check up when user provided name, email, phone\
+            \ number, and have selected a time."
+          type: book_appointment_cal
+          name: book_appointment
+          cal_api_key: cal_live_xxxxxxxxxxxx
+          event_type_id: 60444
+          timezone: America/Los_Angeles
+      items:
+        properties:
+          name:
+            example: information_collection
+            type: string
+          state_prompt:
+            example: You will follow the steps below to collect information...
+            type: string
+          edges:
+            items:
+              properties:
+                description:
+                  example: Transition to book an appointment if the user is due for
+                    an annual checkup based on the last checkup time collected.
+                  type: string
+                destination_state_name:
+                  example: appointment_booking
+                  type: string
+                speak_during_transition:
+                  example: false
+                  type: boolean
+              type: object
+            type: array
+          tools:
+            items:
+              properties:
+                description:
+                  example: Transfer to the support team when user seems angry or explicitly
+                    requests a human agent
+                  type: string
+                type:
+                  example: transfer_call
+                  type: string
+                name:
+                  example: transfer_to_support
+                  type: string
+                number:
+                  example: "16175551212"
+                  type: string
+                cal_api_key:
+                  example: cal_live_xxxxxxxxxxxx
+                  type: string
+                event_type_id:
+                  example: 60444
+                  type: number
+                timezone:
+                  example: America/Los_Angeles
+                  type: string
+              type: object
+            type: array
+        type: object
+      type: array
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMBase-properties-starting_state:
+      example: information_collection
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-RetellLLMBase-properties-begin_message:
+      example: Hey I am a virtual assistant calling from Retell Hospital.
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-TransferCallTool-properties-name:
+      example: transfer_to_support
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-State-properties-name:
+      example: information_collection
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-State-properties-state_prompt:
+      example: |-
+        ## Task
+        You will follow the steps below...
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-phone_number:
+      example: 14157774444
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-phone_number_pretty:
+      example: +1 (415) 777-4444
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-area_code:
+      example: 415
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberResponse-properties-last_modification_timestamp:
+      example: 1703413636133
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_websocket_protocol:
+      example: twilio
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_encoding:
+      example: s16le
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-sample_rate:
+      example: 24000
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-end_call_after_silence_ms:
+      example: 600000
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-from_number:
+      example: 12137771234
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-to_number:
+      example: 12137771235
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-retell_llm_dynamic_variables:
+      example:
+        customer_name: John Doe
+      properties:
+        customer_name:
+          example: John Doe
+          type: string
+      type: object
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-area_code:
+      example: 415
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-from:
+      example: 14157774444
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-to:
+      example: 12137774445
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-override_agent_id:
+      example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-retell_llm_dynamic_variables:
+      example:
+        customer_name: John Doe
+      properties:
+        customer_name:
+          example: John Doe
+          type: string
+      type: object
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnectionResponse-properties-error_message:
+      example: "Invalid request format, please check API reference."
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnection401Response-properties-error_message:
+      example: API key is missing or invalid.
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnection402Response-properties-error_message:
+      example: "Trial has ended, please add payment method."
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnection422Response-properties-error_message:
+      example: Cannot find requested asset under given api key.
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnection429Response-properties-error_message:
+      example: "Account rate limited, please throttle your requests."
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-CallEstablishConnection500Response-properties-error_message:
+      example: An unexpected server error occurred.
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-single-parameter-schema-post--register-call:
+      properties:
+        agent_id:
+          description: Unique id of agent used for the call. Your agent would contain
+            the LLM Websocket url used for this call.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-agent_id
+        audio_websocket_protocol:
+          description: |-
+            Where the audio websocket would connect from would determine the format / protocol of websocket messages, and would determine how our server read audio bytes and send audio bytes.:
+
+            - `web`: The protocol defined by Retell, commonly used for connecting from web frontend. Also useful for those who want to manipulate audio bytes directly.
+
+            - `twilio`: The [websocket protocol](https://www.twilio.com/docs/voice/twiml/stream#message-media) defined by Twilio, used when your system uses Twilio, and supplies Retell audio websocket url to Twilio.
+          enum:
+          - web
+          - twilio
+          example: twilio
+          type: string
+          x-konfig-original-example: twilio
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_websocket_protocol
+        audio_encoding:
+          description: "The audio encoding of the call. The following formats are\
+            \ supported: \n\n- `s16le` 16 bit linear PCM audio, the native format\
+            \ for web audio capture and playback.\n\n- `mulaw` non-linear audio encoding\
+            \ technique used in telephony. Commonly used by Twilio."
+          enum:
+          - s16le
+          - mulaw
+          example: s16le
+          type: string
+          x-konfig-original-example: s16le
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-audio_encoding
+        sample_rate:
+          description: "Sample rate of the conversation, the input and output audio\
+            \ bytes will all conform to this rate. Check the audio source, audio format,\
+            \ and voice used for the agent to select one that works. supports value\
+            \ ranging from [8000, 48000]. Note for Twilio `mulaw` encoding, the sample\
+            \ rate has to be 8000.\n\n- `s16le` sample rate recommendation (natively\
+            \ supported, lowest latency): \n  - elevenlabs voices: 16000, 22050, 24000,\
+            \ 44100.\n  - openai voices: 24000.\n\n  - deepgram voices: 8000, 16000,\
+            \ 24000, 32000, 48000."
+          example: 24000
+          type: integer
+          x-konfig-original-example: 24000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-sample_rate
+        end_call_after_silence_ms:
+          description: "If users stay silent for a period, end the call. By default,\
+            \ it is set to 600,000 ms (10 min). The minimum value allowed is 10,000\
+            \ ms (10 s)."
+          example: 600000
+          type: integer
+          x-konfig-original-example: 600000
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-end_call_after_silence_ms
+        from_number:
+          description: "The caller number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771234"
+          type: string
+          x-konfig-original-example: 12137771234
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-from_number
+        to_number:
+          description: "The callee number. This field is storage purpose only, set\
+            \ this if you want the call object to contain it so that it's easier to\
+            \ reference it. Not used for processing, when we connect to your LLM websocket\
+            \ server, you can then get it from the call object."
+          example: "12137771235"
+          type: string
+          x-konfig-original-example: 12137771235
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-to_number
+        metadata:
+          description: "An abtriary object for storage purpose only. You can put anything\
+            \ here like your own id for the call, twilio SID, internal customer id.\
+            \ Not used for processing, when we connect to your LLM websocket server,\
+            \ you can then get it from the call object."
+          type: object
+        retell_llm_dynamic_variables:
+          additionalProperties: {}
+          description: Add optional dynamic variables in key value pairs of string
+            that injects into your Retell LLM prompt and tool description. Only applicable
+            for Retell LLM.
+          example:
+            customer_name: John Doe
+          type: object
+          x-konfig-original-example:
+            customer_name: John Doe
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallEstablishConnectionRequest-properties-retell_llm_dynamic_variables
+      required:
+      - agent_id
+      - audio_encoding
+      - audio_websocket_protocol
+      - sample_rate
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--get-call-call_id:
+      properties:
+        call_id:
+          example: 119c3f8e47135a29e65947eeb34cf12d
+          type: string
+          x-konfig-original-example: 119c3f8e47135a29e65947eeb34cf12d
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-call-call_id-get-parameters-0-schema
+      required:
+      - call_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - call_id
+    konfig-generated-schema-single-parameter-schema-get--list-calls:
+      properties:
+        filter_criteria:
+          properties:
+            agent_id:
+              description: Only retrieve calls that are made with specific agent(s).
+              example:
+              - oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+              items:
+                type: string
+              type: array
+              x-konfig-original-example:
+              - oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+              x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-agent_id
+            before_start_timestamp:
+              description: Exclusive. Filter calls that start before this timestamp.
+              example: 1703302407399
+              type: integer
+              x-konfig-original-example: 1703302407399
+              x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_start_timestamp
+            after_start_timestamp:
+              description: Inclusive. Filter calls that start on or after this timestamp.
+              example: 1703302407300
+              type: integer
+              x-konfig-original-example: 1703302407300
+              x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_start_timestamp
+            before_end_timestamp:
+              description: Exclusive. Filter calls that end before this timestamp.
+              example: 1703302428899
+              type: integer
+              x-konfig-original-example: 1703302428899
+              x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_end_timestamp
+            after_end_timestamp:
+              description: Inclusive. Filter calls that end on or after this timestamp.
+              example: 1703302428800
+              type: integer
+              x-konfig-original-example: 1703302428800
+              x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_end_timestamp
+          type: object
+        sort_order:
+          default: descending
+          enum:
+          - ascending
+          - descending
+          example: descending
+          type: string
+          x-konfig-original-example: descending
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-1-schema
+        limit:
+          default: 1000
+          example: 1000
+          type: integer
+          x-konfig-original-example: 1000
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-2-schema
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - filter_criteria
+      - sort_order
+      - limit
+    konfig-generated-schema-single-parameter-schema-post--create-agent:
+      properties:
+        llm_websocket_url:
+          description: "The URL we will establish LLM websocket for getting response,\
+            \ usually your server. Check out [LLM WebSocket](https://raw.githubusercontent.com)\
+            \ for more about request format (sent from us) and response format (send\
+            \ to us)."
+          example: wss://your-websocket-endpoint
+          type: string
+          x-konfig-original-example: wss://your-websocket-endpoint
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-llm_websocket_url
+        voice_id:
+          description: Unique voice id used for the agent. Find list of available
+            voices and their preview in Dashboard.
+          example: 11labs-Adrian
+          type: string
+          x-konfig-original-example: 11labs-Adrian
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_id
+        voice_temperature:
+          description: "Controls how stable the voice is. Value ranging from [0,2].\
+            \ Lower value means more stable, and higher value means more variant speech\
+            \ generation. Currently this setting only applies to `11labs` voices.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_temperature
+        voice_speed:
+          description: "Controls speed of voice. Value ranging from [0.5,2]. Lower\
+            \ value means slower speech, while higher value means faster speech rate.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_speed
+        responsiveness:
+          description: "Controls how responsive is the agent. Value ranging from [0,1].\
+            \ Lower value means less responsive agent (wait more, respond slower),\
+            \ while higher value means faster exchanges (respond when it can). If\
+            \ unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-responsiveness
+        enable_backchannel:
+          description: "Controls whether the agent would backchannel (agent interjects\
+            \ the speaker with phrases like \"yeah\", \"uh-huh\" to signify interest\
+            \ and engagement). Backchannel when enabled tends to show up more in longer\
+            \ user utterances. If not set, agent will not backchannel."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-enable_backchannel
+        ambient_sound:
+          description: "If set, will add ambient environment sound to the call to\
+            \ make experience more realistic. Currently supports the following options:\n\
+            \n- `coffee-shop`: Coffee shop ambience with people chatting in background.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/coffee-shop.wav)\n\
+            \n- `convention-hall`: Convention hall ambience, with some echo and people\
+            \ chatting in background. [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/convention-hall.wav)\n\
+            \n- `summer-outdoor`: Summer outdoor ambience with cicada chirping. [Listen\
+            \ to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/summer-outdoor.wav)\n\
+            \n- `mountain-outdoor`: Mountain outdoor ambience with birds singing.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/mountain-outdoor.wav)\n\
+            \n Set to string `null` to remove ambient sound from this agent. "
+          enum:
+          - coffee-shop
+          - convention-hall
+          - summer-outdoor
+          - mountain-outdoor
+          - "null"
+          type: string
+        agent_name:
+          description: The name of the agent. Only used for your own reference.
+          example: Jarvis
+          type: string
+          x-konfig-original-example: Jarvis
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-agent_name
+        language:
+          description: "`Beta feature, use with caution.`\n\n This setting specifies\
+            \ the agent's operational language, including base language and dialect.\
+            \ Speech recognition considers both elements, but text-to-speech currently\
+            \ only recognizes the base language. \n\n For instance, selecting `en-GB`\
+            \ optimizes speech recognition for British English, yet text-to-speech\
+            \ output will be in standard English. If dialect-specific text-to-speech\
+            \ is required, please contact us for support. \n\n- `11lab voices`: supports\
+            \ English(en), German(de), Spanish(es), Hindi(hi), Portuguese(pt) \n\n\
+            - `openAI voices`: supports English(en), German(de), Spanish(es), Hindi(hi),\
+            \ Portuguese(pt), Japanese(ja) \n\n- `deepgram voices`: supports English(en) "
+          enum:
+          - en-US
+          - en-IN
+          - en-GB
+          - de-DE
+          - es-ES
+          - es-419
+          - hi-IN
+          - ja-JP
+          - pt-PT
+          - pt-BR
+          example: en-US
+          type: string
+          x-konfig-original-example: en-US
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-language
+        webhook_url:
+          description: "The webhook for agent to listen to call events. See what events\
+            \ it would get at [webhook doc](https://raw.githubusercontent.com). If\
+            \ set, will binds webhook events for this agent to the specified url,\
+            \ and will ignore the account level webhook for this agent. Set to string\
+            \ `null` to remove webhook url from this agent."
+          example: https://webhook-url-here
+          type: string
+          x-konfig-original-example: https://webhook-url-here
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-webhook_url
+        boosted_keywords:
+          description: "Provide a customized list of keywords to bias the transcriber\
+            \ model, so that these words are more likely to get transcribed. Commonly\
+            \ used for names, brands, street, etc."
+          example:
+          - retell
+          - kroger
+          items:
+            type: string
+          type: array
+          x-konfig-original-example:
+          - retell
+          - kroger
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-boosted_keywords
+        format_text:
+          description: "Whether to format the transcribed text with inverse text normalization.\
+            \ It transforms the spoken form of text into written form for entities\
+            \ like phone number, email address, street address, etc. For example,\
+            \ \"february fourth twenty twenty two\" can be converted into \"february\
+            \ 4th 2022\". If not set, the default is true."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-format_text
+        optOutSensitiveDataStorage:
+          description: Disable transcripts and recordings storage for enhanced privacy.
+            Access transcripts securely via webhooks.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-optOutSensitiveDataStorage
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--get-agent-agent_id:
+      properties:
+        agent_id:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-agent-agent_id-get-parameters-0-schema
+      required:
+      - agent_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - agent_id
+    konfig-generated-schema-single-parameter-schema-get--list-agents:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-patch--update-agent-agent_id:
+      properties:
+        agent_id:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-agent-agent_id-patch-parameters-0-schema
+        llm_websocket_url:
+          description: "The URL we will establish LLM websocket for getting response,\
+            \ usually your server. Check out [LLM WebSocket](https://raw.githubusercontent.com)\
+            \ for more about request format (sent from us) and response format (send\
+            \ to us)."
+          example: wss://your-websocket-endpoint
+          type: string
+          x-konfig-original-example: wss://your-websocket-endpoint
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-llm_websocket_url
+        voice_id:
+          description: Unique voice id used for the agent. Find list of available
+            voices and their preview in Dashboard.
+          example: 11labs-Adrian
+          type: string
+          x-konfig-original-example: 11labs-Adrian
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_id
+        voice_temperature:
+          description: "Controls how stable the voice is. Value ranging from [0,2].\
+            \ Lower value means more stable, and higher value means more variant speech\
+            \ generation. Currently this setting only applies to `11labs` voices.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_temperature
+        voice_speed:
+          description: "Controls speed of voice. Value ranging from [0.5,2]. Lower\
+            \ value means slower speech, while higher value means faster speech rate.\
+            \ If unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-voice_speed
+        responsiveness:
+          description: "Controls how responsive is the agent. Value ranging from [0,1].\
+            \ Lower value means less responsive agent (wait more, respond slower),\
+            \ while higher value means faster exchanges (respond when it can). If\
+            \ unset, default value 1 will apply."
+          example: 1
+          type: number
+          x-konfig-original-example: 1
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-responsiveness
+        enable_backchannel:
+          description: "Controls whether the agent would backchannel (agent interjects\
+            \ the speaker with phrases like \"yeah\", \"uh-huh\" to signify interest\
+            \ and engagement). Backchannel when enabled tends to show up more in longer\
+            \ user utterances. If not set, agent will not backchannel."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-enable_backchannel
+        ambient_sound:
+          description: "If set, will add ambient environment sound to the call to\
+            \ make experience more realistic. Currently supports the following options:\n\
+            \n- `coffee-shop`: Coffee shop ambience with people chatting in background.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/coffee-shop.wav)\n\
+            \n- `convention-hall`: Convention hall ambience, with some echo and people\
+            \ chatting in background. [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/convention-hall.wav)\n\
+            \n- `summer-outdoor`: Summer outdoor ambience with cicada chirping. [Listen\
+            \ to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/summer-outdoor.wav)\n\
+            \n- `mountain-outdoor`: Mountain outdoor ambience with birds singing.\
+            \ [Listen to Ambience](https://retell-utils-public.s3.us-west-2.amazonaws.com/mountain-outdoor.wav)\n\
+            \n Set to string `null` to remove ambient sound from this agent. "
+          enum:
+          - coffee-shop
+          - convention-hall
+          - summer-outdoor
+          - mountain-outdoor
+          - "null"
+          type: string
+        agent_name:
+          description: The name of the agent. Only used for your own reference.
+          example: Jarvis
+          type: string
+          x-konfig-original-example: Jarvis
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-agent_name
+        language:
+          description: "`Beta feature, use with caution.`\n\n This setting specifies\
+            \ the agent's operational language, including base language and dialect.\
+            \ Speech recognition considers both elements, but text-to-speech currently\
+            \ only recognizes the base language. \n\n For instance, selecting `en-GB`\
+            \ optimizes speech recognition for British English, yet text-to-speech\
+            \ output will be in standard English. If dialect-specific text-to-speech\
+            \ is required, please contact us for support. \n\n- `11lab voices`: supports\
+            \ English(en), German(de), Spanish(es), Hindi(hi), Portuguese(pt) \n\n\
+            - `openAI voices`: supports English(en), German(de), Spanish(es), Hindi(hi),\
+            \ Portuguese(pt), Japanese(ja) \n\n- `deepgram voices`: supports English(en) "
+          enum:
+          - en-US
+          - en-IN
+          - en-GB
+          - de-DE
+          - es-ES
+          - es-419
+          - hi-IN
+          - ja-JP
+          - pt-PT
+          - pt-BR
+          example: en-US
+          type: string
+          x-konfig-original-example: en-US
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-language
+        webhook_url:
+          description: "The webhook for agent to listen to call events. See what events\
+            \ it would get at [webhook doc](https://raw.githubusercontent.com). If\
+            \ set, will binds webhook events for this agent to the specified url,\
+            \ and will ignore the account level webhook for this agent. Set to string\
+            \ `null` to remove webhook url from this agent."
+          example: https://webhook-url-here
+          type: string
+          x-konfig-original-example: https://webhook-url-here
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-webhook_url
+        boosted_keywords:
+          description: "Provide a customized list of keywords to bias the transcriber\
+            \ model, so that these words are more likely to get transcribed. Commonly\
+            \ used for names, brands, street, etc."
+          example:
+          - retell
+          - kroger
+          items:
+            type: string
+          type: array
+          x-konfig-original-example:
+          - retell
+          - kroger
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-boosted_keywords
+        format_text:
+          description: "Whether to format the transcribed text with inverse text normalization.\
+            \ It transforms the spoken form of text into written form for entities\
+            \ like phone number, email address, street address, etc. For example,\
+            \ \"february fourth twenty twenty two\" can be converted into \"february\
+            \ 4th 2022\". If not set, the default is true."
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-format_text
+        optOutSensitiveDataStorage:
+          description: Disable transcripts and recordings storage for enhanced privacy.
+            Access transcripts securely via webhooks.
+          example: true
+          type: boolean
+          x-konfig-original-example: true
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-BaseAgent-properties-optOutSensitiveDataStorage
+      required:
+      - agent_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - agent_id
+    konfig-generated-schema-single-parameter-schema-delete--delete-agent-agent_id:
+      properties:
+        agent_id:
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-agent-agent_id-delete-parameters-0-schema
+      required:
+      - agent_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - agent_id
+    konfig-generated-schema-single-parameter-schema-post--create-retell-llm:
+      properties:
+        general_prompt:
+          description: "General prompt that's appended to system prompt no matter\
+            \ what state the agent is in. \n\n- System prompt (with state) = general\
+            \ prompt + state prompt.\n\n- System prompt (no state) = general prompt."
+          example: You are ...
+          type: string
+          x-konfig-original-example: You are ...
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_prompt
+        general_tools:
+          description: "A list of tools the model may call (to get external knowledge,\
+            \ call API, etc). You can select from some common predefined tools like\
+            \ end call, transfer call, etc; or you can create your own custom tool\
+            \ (last option) for the LLM to use. \n\n- Tools of LLM (with state) =\
+            \ general tools + state tools + state transitions\n\n- Tools of LLM (no\
+            \ state) = general tools"
+          example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          items:
+            $ref: '#/components/schemas/Tool'
+          type: array
+          x-konfig-original-example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_tools
+        states:
+          description: "States of the LLM. This is to help reduce prompt length and\
+            \ tool choices when the call can be broken into distinct states. With\
+            \ shorter prompts and less tools, the LLM can better focus and follow\
+            \ the rules, minimizing hallucination. If this field is not set, the agent\
+            \ would only have general prompt and general tools (essentially one state)."
+          example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          items:
+            $ref: '#/components/schemas/State'
+          type: array
+          x-konfig-original-example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-states
+        starting_state:
+          description: Name of the starting state. Required if states is not empty.
+          example: information_collection
+          type: string
+          x-konfig-original-example: information_collection
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-starting_state
+        begin_message:
+          description: "First utterance said by the agent in the call. If not set,\
+            \ LLM will dynamically generate a message. If set to \"\", agent will\
+            \ wait for user to speak first."
+          example: Hey I am a virtual assistant calling from Retell Hospital.
+          type: string
+          x-konfig-original-example: Hey I am a virtual assistant calling from Retell
+            Hospital.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-begin_message
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--get-retell-llm-llm_id:
+      properties:
+        llm_id:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-retell-llm-llm_id-get-parameters-0-schema
+      required:
+      - llm_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - llm_id
+    konfig-generated-schema-single-parameter-schema-get--list-retell-llms:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-patch--update-retell-llm-llm_id:
+      properties:
+        llm_id:
+          example: 16b980523634a6dc504898cda492e939
+          type: string
+          x-konfig-original-example: 16b980523634a6dc504898cda492e939
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-retell-llm-llm_id-patch-parameters-0-schema
+        general_prompt:
+          description: "General prompt that's appended to system prompt no matter\
+            \ what state the agent is in. \n\n- System prompt (with state) = general\
+            \ prompt + state prompt.\n\n- System prompt (no state) = general prompt."
+          example: You are ...
+          type: string
+          x-konfig-original-example: You are ...
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_prompt
+        general_tools:
+          description: "A list of tools the model may call (to get external knowledge,\
+            \ call API, etc). You can select from some common predefined tools like\
+            \ end call, transfer call, etc; or you can create your own custom tool\
+            \ (last option) for the LLM to use. \n\n- Tools of LLM (with state) =\
+            \ general tools + state tools + state transitions\n\n- Tools of LLM (no\
+            \ state) = general tools"
+          example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          items:
+            $ref: '#/components/schemas/Tool'
+          type: array
+          x-konfig-original-example:
+          - description: End the call with user only when user explicitly requests
+              it.
+            type: end_call
+            name: end_call
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-general_tools
+        states:
+          description: "States of the LLM. This is to help reduce prompt length and\
+            \ tool choices when the call can be broken into distinct states. With\
+            \ shorter prompts and less tools, the LLM can better focus and follow\
+            \ the rules, minimizing hallucination. If this field is not set, the agent\
+            \ would only have general prompt and general tools (essentially one state)."
+          example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          items:
+            $ref: '#/components/schemas/State'
+          type: array
+          x-konfig-original-example:
+          - name: information_collection
+            state_prompt: You will follow the steps below to collect information...
+            edges:
+            - description: Transition to book an appointment if the user is due for
+                an annual checkup based on the last checkup time collected.
+              destination_state_name: appointment_booking
+              speak_during_transition: false
+            tools:
+            - description: Transfer to the support team when user seems angry or explicitly
+                requests a human agent
+              type: transfer_call
+              name: transfer_to_support
+              number: "16175551212"
+          - name: appointment_booking
+            state_prompt: You will follow the steps below to book an appointment...
+            tools:
+            - description: "Book an annual check up when user provided name, email,\
+                \ phone number, and have selected a time."
+              type: book_appointment_cal
+              name: book_appointment
+              cal_api_key: cal_live_xxxxxxxxxxxx
+              event_type_id: 60444
+              timezone: America/Los_Angeles
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-states
+        starting_state:
+          description: Name of the starting state. Required if states is not empty.
+          example: information_collection
+          type: string
+          x-konfig-original-example: information_collection
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-starting_state
+        begin_message:
+          description: "First utterance said by the agent in the call. If not set,\
+            \ LLM will dynamically generate a message. If set to \"\", agent will\
+            \ wait for user to speak first."
+          example: Hey I am a virtual assistant calling from Retell Hospital.
+          type: string
+          x-konfig-original-example: Hey I am a virtual assistant calling from Retell
+            Hospital.
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMBase-properties-begin_message
+      required:
+      - llm_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - llm_id
+    konfig-generated-schema-single-parameter-schema-delete--delete-retell-llm-llm_id:
+      properties:
+        llm_id:
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-retell-llm-llm_id-delete-parameters-0-schema
+      required:
+      - llm_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - llm_id
+    konfig-generated-schema-single-parameter-schema-post--create-phone-number:
+      properties:
+        agent_id:
+          description: Unique id of agent to bind to newly obtained number. The number
+            will automatically use the agent when doing inbound / outbound calls.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-agent_id
+        area_code:
+          description: Area code of the number to obtain. Format is a 3 digit integer.
+            Currently only supports US area code.
+          example: 415
+          type: integer
+          x-konfig-original-example: 415
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-PhoneNumberPurchaseNumberAndBindAgentRequest-properties-area_code
+      required:
+      - agent_id
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--get-phone-number-phone_number:
+      properties:
+        phone_number:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--get-phone-number-phone_number-get-parameters-0-schema
+      required:
+      - phone_number
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - phone_number
+    konfig-generated-schema-single-parameter-schema-get--list-phone-numbers:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-patch--update-phone-number-phone_number:
+      properties:
+        phone_number:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--update-phone-number-phone_number-patch-parameters-0-schema
+        agent_id:
+          description: Unique id of agent to bind to number. The number will automatically
+            use the agent when doing inbound / outbound calls.
+          type: string
+      required:
+      - agent_id
+      - phone_number
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - phone_number
+    konfig-generated-schema-single-parameter-schema-delete--delete-phone-number-phone_number:
+      properties:
+        phone_number:
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-paths--delete-phone-number-phone_number-delete-parameters-0-schema
+      required:
+      - phone_number
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - phone_number
+    konfig-generated-schema-single-parameter-schema-post--create-phone-call:
+      properties:
+        phone_number:
+          properties:
+            from:
+              description: The number you own in BCP 47 format.
+              example: "14157774444"
+              type: string
+              x-konfig-original-example: 14157774444
+              x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-from
+            to:
+              description: "The number you want to call, in BCP 47 format."
+              example: "12137774445"
+              type: string
+              x-konfig-original-example: 12137774445
+              x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-to
+          required:
+          - from
+          - to
+          type: object
+        override_agent_id:
+          description: "For this particular call, override the agent used with this\
+            \ agent id. This does not bind the agent to this number, this is for one\
+            \ time override."
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-override_agent_id
+        retell_llm_dynamic_variables:
+          additionalProperties: {}
+          description: Add optional dynamic variables in key value pairs of string
+            that injects into your Retell LLM prompt and tool description. Only applicable
+            for Retell LLM.
+          example:
+            customer_name: John Doe
+          type: object
+          x-konfig-original-example:
+            customer_name: John Doe
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-retell_llm_dynamic_variables
+      required:
+      - phone_number
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    Call_getDetails_filter_criteria_parameter:
+      properties:
+        agent_id:
+          description: Only retrieve calls that are made with specific agent(s).
+          example:
+          - oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          items:
+            type: string
+          type: array
+          x-konfig-original-example:
+          - oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-agent_id
+        before_start_timestamp:
+          description: Exclusive. Filter calls that start before this timestamp.
+          example: 1703302407399
+          type: integer
+          x-konfig-original-example: 1703302407399
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_start_timestamp
+        after_start_timestamp:
+          description: Inclusive. Filter calls that start on or after this timestamp.
+          example: 1703302407300
+          type: integer
+          x-konfig-original-example: 1703302407300
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_start_timestamp
+        before_end_timestamp:
+          description: Exclusive. Filter calls that end before this timestamp.
+          example: 1703302428899
+          type: integer
+          x-konfig-original-example: 1703302428899
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-before_end_timestamp
+        after_end_timestamp:
+          description: Inclusive. Filter calls that end on or after this timestamp.
+          example: 1703302428800
+          type: integer
+          x-konfig-original-example: 1703302428800
+          x-konfig-generated-schema: konfig-generated-schema-paths--list-calls-get-parameters-0-schema-properties-after_end_timestamp
+      type: object
+    Utterance_words_inner:
+      properties:
+        word:
+          description: Word transcript (with punctuation if applicable).
+          type: string
+        start:
+          description: "Start time of the word in the call in second. This is relative\
+            \ audio time, not wall time."
+          type: number
+        end:
+          description: "End time of the word in the call in second. This is relative\
+            \ audio time, not wall time."
+          type: number
+      type: object
+    CallDetail_allOf_e2e_latency:
+      description: "End to end latency (from user stops talking to agent start talking)\
+        \ tracking of the call, available after call ends. This latency does not account\
+        \ for the network trip time from Retell server to user frontend."
+      properties:
+        p50:
+          description: 50 percentile of end to end latency.
+          example: 0.8
+          type: number
+          x-konfig-original-example: 0.8
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p50
+        p90:
+          description: 90 percentile of end to end latency.
+          example: 1.2
+          type: number
+          x-konfig-original-example: 1.2
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p90
+        p95:
+          description: 95 percentile of end to end latency.
+          example: 1.5
+          type: number
+          x-konfig-original-example: 1.5
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p95
+        p99:
+          description: 99 percentile of end to end latency.
+          example: 2.7
+          type: number
+          x-konfig-original-example: 2.7
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-p99
+        max:
+          description: Maximum end to end latency in the call.
+          example: 2.7
+          type: number
+          x-konfig-original-example: 2.7
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-max
+        min:
+          description: Minimum end to end latency in the call.
+          example: 0.5
+          type: number
+          x-konfig-original-example: 0.5
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-min
+        num:
+          description: Number of turn change. We track latency every time turn change
+            between user and agent.
+          example: 10
+          type: number
+          x-konfig-original-example: 10
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-e2e_latency-properties-num
+      type: object
+      example: null
+    CallDetail_allOf:
+      properties:
+        end_timestamp:
+          description: End timestamp (milliseconds since epoch) of the call. Available
+            after call ends.
+          example: 1703302428855
+          type: integer
+          x-konfig-original-example: 1703302428855
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-end_timestamp
+        transcript:
+          description: Transcription of the call. Available after call ends.
+          example: "Agent: hi how are you doing?\nUser: Doing pretty well. How are\
+            \ you?\nAgent: That's great to hear! I'm doing well too, thanks! What's\
+            \ up?\nUser: I don't have anything in particular.\nAgent: Got it, just\
+            \ checking in!\nUser: Alright. See you.\nAgent: have a nice day\n "
+          type: string
+          x-konfig-original-example: "Agent: hi how are you doing?\nUser: Doing pretty\
+            \ well. How are you?\nAgent: That's great to hear! I'm doing well too,\
+            \ thanks! What's up?\nUser: I don't have anything in particular.\nAgent:\
+            \ Got it, just checking in!\nUser: Alright. See you.\nAgent: have a nice\
+            \ day\n "
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-transcript
+        transcript_object:
+          description: "Transcript of the call in the format of a list of utterance,\
+            \ with timestamp. Available after call ends."
+          items:
+            $ref: '#/components/schemas/Utterance'
+          type: array
+        recording_url:
+          description: Recording of the call. Available after call ends.
+          example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/recording.wav
+          type: string
+          x-konfig-original-example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/recording.wav
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-recording_url
+        public_log_url:
+          description: "Public log of the call, containing details about all the requests\
+            \ and responses received in LLM WebSocket, latency tracking for each turntaking,\
+            \ helpful for debugging and tracing. Available after call ends."
+          example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/public_log.txt
+          type: string
+          x-konfig-original-example: https://retellai.s3.us-west-2.amazonaws.com/Jabr9TXYYJHfvl6Syypi88rdAHYHmcq6/public_log.txt
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallDetail-allOf-1-properties-public_log_url
+        e2e_latency:
+          $ref: '#/components/schemas/CallDetail_allOf_e2e_latency'
+      example: null
+    AgentResponse_allOf:
+      properties:
+        agent_id:
+          description: Unique id of agent.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-AgentResponse-allOf-0-properties-agent_id
+      example: null
+    AgentResponse_allOf_1:
+      properties:
+        last_modification_timestamp:
+          description: Last modification timestamp (milliseconds since epoch). Either
+            the time of last update or creation if no updates available.
+          example: 1703413636133
+          type: integer
+          x-konfig-original-example: 1703413636133
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-AgentResponse-allOf-2-properties-last_modification_timestamp
+      example: null
+    RetellLLMResponse_allOf:
+      properties:
+        llm_id:
+          description: Unique id of Retell LLM.
+          example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-0-properties-llm_id
+        llm_websocket_url:
+          description: The LLM Websocket URL constructed from unique id of Retell
+            LLM. Used in agent API to create / update agent.
+          example: wss://api.retellai.com/retell-llm/llm-websocket/oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          type: string
+          x-konfig-original-example: wss://api.retellai.com/retell-llm/llm-websocket/oBeDLoLOeuAbiuaMFXRtDOLriTJ5tSxD
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-0-properties-llm_websocket_url
+      example: null
+    RetellLLMResponse_allOf_1:
+      properties:
+        last_modification_timestamp:
+          description: Last modification timestamp (milliseconds since epoch). Either
+            the time of last update or creation if no updates available.
+          example: 1703413636133
+          type: integer
+          x-konfig-original-example: 1703413636133
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-RetellLLMResponse-allOf-2-properties-last_modification_timestamp
+      example: null
+    CallMakeConnectionRequest_phone_number:
+      example:
+        from: "14157774444"
+        to: "12137774445"
+      properties:
+        from:
+          description: The number you own in BCP 47 format.
+          example: "14157774444"
+          type: string
+          x-konfig-original-example: 14157774444
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-from
+        to:
+          description: "The number you want to call, in BCP 47 format."
+          example: "12137774445"
+          type: string
+          x-konfig-original-example: 12137774445
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-CallMakeConnectionRequest-properties-phone_number-properties-to
+      required:
+      - from
+      - to
+      type: object
+  securitySchemes:
+    api_key:
+      bearerFormat: string
+      description: Authentication header containing API key (find it in dashboard).
+        The format is "Bearer YOUR_API_KEY"
+      scheme: bearer
+      type: http
+      x-konfig-globally-required-security: true
+
